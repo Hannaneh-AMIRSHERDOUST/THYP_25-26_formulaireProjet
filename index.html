@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projets Hypermédias</title>
+  <style>
+    body { font-family: Arial; max-width: 1200px; margin: 2rem auto; padding: 1rem; background: #f5f5f5; }
+    h1, h2 { text-align:center; color:#333; }
+    p { text-align:center; }
+    a { color:#0066cc; font-weight:bold; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    .projects-container { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:1.5rem; margin-top:2rem; }
+    .project-card { background:#fff; border-radius:10px; padding:1.2rem; box-shadow:0 4px 10px rgba(0,0,0,0.1); transition: transform 0.2s, box-shadow 0.2s; }
+    .project-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+    .project-card h3 { margin-top:0; color:#0066cc; }
+    .project-card p { margin:0.4rem 0; }
+    .project-card a { color:#0066cc; }
+  </style>
+</head>
+<body>
+
+<h1>Projets de technologie hypermédias</h1>
+
+<p>
+  👉 <a href="https://docs.google.com/forms/d/e/1FAIpQLSew5Ug2xcYU9JQe3OVuf66FQiNXIAqTdf1pFXw3BhFHSwRDNw/viewform" target="_blank">
+    Remplir le formulaire
+  </a>
+</p>
+
+<h2>Projets déjà soumis :</h2>
+<div id="projects" class="projects-container"></div>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script>
+  const csvUrl = "projects.csv"; // local CSV file
+  const container = d3.select("#projects");
+
+  d3.csv(csvUrl).then(data => {
+    data.forEach(d => {
+      if(d.Titre) {
+        const card = container.append("div").attr("class","project-card");
+        card.append("h3").text(d.Titre);
+        card.append("p").html(`<strong>Auteur:</strong> ${d.Auteur || "Non précisé"}`);
+        card.append("p").html(`<strong>Description:</strong> ${d.Description || "Pas de description"}`);
+        card.append("p").html(`<strong>Technologies:</strong> ${d.Technologies || "Non précisées"}`);
+        card.append("p").html(`<strong>Lien:</strong> ${d.Lien ? `<a href="${d.Lien}" target="_blank">${d.Lien}</a>` : "Non fourni"}`);
+      }
+    });
+  }).catch(err => {
+    console.error("Erreur CSV:", err);
+    container.append("p").text("Impossible de charger les projets. Vérifiez le CSV.");
+  });
+</script>
+
+</body>
+</html>
