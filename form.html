@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter un projet</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 3px 6px rgba(0,0,0,0.1);
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+        }
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Ajouter un projet Hypermedias</h1>
+
+    <form id="projectForm">
+        <label for="nom">Nom du projet :</label>
+        <input type="text" id="nom" name="nom" required>
+
+        <label for="description">Description :</label>
+        <textarea id="description" name="description" rows="4" required></textarea>
+
+        <label for="technologies">Technologies utilisées :</label>
+        <input type="text" id="technologies" name="technologies">
+
+        <label for="niveau">Niveau du projet :</label>
+        <select id="niveau" name="niveau">
+            <option value="débutant">Débutant</option>
+            <option value="intermédiaire">Intermédiaire</option>
+            <option value="avancé">Avancé</option>
+        </select>
+
+        <button type="submit">Ajouter le projet</button>
+    </form>
+
+    <script>
+        const form = document.getElementById("projectForm");
+        form.addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            // Récupération des projets existants
+            const projects = JSON.parse(localStorage.getItem("projects") || "[]");
+
+            // Création du nouveau projet
+            const newProject = {
+                nom: document.getElementById("nom").value,
+                description: document.getElementById("description").value,
+                technologies: document.getElementById("technologies").value,
+                niveau: document.getElementById("niveau").value
+            };
+
+            // Ajout du projet au tableau
+            projects.push(newProject);
+
+            // Sauvegarde dans le localStorage
+            localStorage.setItem("projects", JSON.stringify(projects));
+
+            // Redirection vers la page principale
+            window.location.href = "index.html";
+        });
+    </script>
+</body>
+</html>

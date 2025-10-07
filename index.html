@@ -1,57 +1,128 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Projets Hypermédias</title>
-  <style>
-    body { font-family: Arial; max-width: 1200px; margin: 2rem auto; padding: 1rem; background: #f5f5f5; }
-    h1, h2 { text-align:center; color:#333; }
-    p { text-align:center; }
-    a { color:#0066cc; font-weight:bold; text-decoration:none; }
-    a:hover { text-decoration:underline; }
-    .projects-container { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:1.5rem; margin-top:2rem; }
-    .project-card { background:#fff; border-radius:10px; padding:1.2rem; box-shadow:0 4px 10px rgba(0,0,0,0.1); transition: transform 0.2s, box-shadow 0.2s; }
-    .project-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
-    .project-card h3 { margin-top:0; color:#0066cc; }
-    .project-card p { margin:0.4rem 0; }
-    .project-card a { color:#0066cc; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projets Hypermedias</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f8f9fa;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-bottom: 20px;
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            width: 200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        #projects-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .project-card {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0px 3px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 6px 12px rgba(0,0,0,0.2);
+        }
+        .project-card h2 {
+            margin-top: 0;
+            font-size: 20px;
+            color: #007bff;
+        }
+        .project-card p {
+            margin: 5px 0;
+            color: #555;
+        }
+        .niveau {
+            font-weight: bold;
+            padding: 3px 6px;
+            border-radius: 3px;
+            color: white;
+        }
+        .débutant { background-color: #28a745; }
+        .intermédiaire { background-color: #ffc107; }
+        .avancé { background-color: #dc3545; }
+    </style>
 </head>
 <body>
+    <h1>Projets Hypermedias</h1>
+    <a href="form.html" target="_blank">Ajouter un nouveau projet</a>
+    <div id="projects-container"></div>
 
-<h1>Projets de technologie hypermédias</h1>
+    <script>
+        // Sample projects
+        const sampleProjects = [
+            {
+                nom: "Bibliothèque en ligne",
+                description: "Application pour gérer des livres et utilisateurs.",
+                technologies: "HTML, CSS, JS",
+                niveau: "débutant"
+            },
+            {
+                nom: "Jeu de mémoire",
+                description: "Petit jeu pour entraîner la mémoire visuelle.",
+                technologies: "JavaScript, D3",
+                niveau: "intermédiaire"
+            },
+            {
+                nom: "Visualisation de données météo",
+                description: "Affiche graphiquement les températures et précipitations.",
+                technologies: "D3.js, API météo",
+                niveau: "avancé"
+            }
+        ];
 
-<p>
-  👉 <a href="https://docs.google.com/forms/d/e/1FAIpQLSew5Ug2xcYU9JQe3OVuf66FQiNXIAqTdf1pFXw3BhFHSwRDNw/viewform" target="_blank">
-    Remplir le formulaire
-  </a>
-</p>
+        // Initialiser localStorage si vide
+        if (!localStorage.getItem("projects")) {
+            localStorage.setItem("projects", JSON.stringify(sampleProjects));
+        }
 
-<h2>Projets déjà soumis :</h2>
-<div id="projects" class="projects-container"></div>
+        // Récupérer projets
+        const projects = JSON.parse(localStorage.getItem("projects"));
 
-<script src="https://d3js.org/d3.v7.min.js"></script>
-<script>
-  const csvUrl = "projects.csv"; // local CSV file
-  const container = d3.select("#projects");
+        // Affichage avec cartes
+        const container = document.getElementById("projects-container");
+        projects.forEach(project => {
+            const card = document.createElement("div");
+            card.className = "project-card";
 
-  d3.csv(csvUrl).then(data => {
-    data.forEach(d => {
-      if(d.Titre) {
-        const card = container.append("div").attr("class","project-card");
-        card.append("h3").text(d.Titre);
-        card.append("p").html(`<strong>Auteur:</strong> ${d.Auteur || "Non précisé"}`);
-        card.append("p").html(`<strong>Description:</strong> ${d.Description || "Pas de description"}`);
-        card.append("p").html(`<strong>Technologies:</strong> ${d.Technologies || "Non précisées"}`);
-        card.append("p").html(`<strong>Lien:</strong> ${d.Lien ? `<a href="${d.Lien}" target="_blank">${d.Lien}</a>` : "Non fourni"}`);
-      }
-    });
-  }).catch(err => {
-    console.error("Erreur CSV:", err);
-    container.append("p").text("Impossible de charger les projets. Vérifiez le CSV.");
-  });
-</script>
+            const title = document.createElement("h2");
+            title.textContent = project.nom;
+            card.appendChild(title);
 
+            const desc = document.createElement("p");
+            desc.textContent = `Description: ${project.description}`;
+            card.appendChild(desc);
+
+            const tech = document.createElement("p");
+            tech.textContent = `Technologies: ${project.technologies}`;
+            card.appendChild(tech);
+
+            const niveau = document.createElement("p");
+            niveau.innerHTML = `Niveau: <span class="niveau ${project.niveau}">${project.niveau}</span>`;
+            card.appendChild(niveau);
+
+            container.appendChild(card);
+        });
+    </script>
 </body>
 </html>
