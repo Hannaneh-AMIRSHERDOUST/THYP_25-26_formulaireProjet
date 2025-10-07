@@ -14,19 +14,19 @@ Les données peuvent être stockées dans **localStorage** ou adaptées pour une
 
 ---
 
-## Diagramme combiné : Données et Workflow
+## Diagramme Entité-Relation
 ```mermaid
-graph TD
-    subgraph Data [Données]
-        PROJECT[Project: id, nom, description, technologies, niveau]
-        USER[User: id, nom, email]
-        PROJECT -->|est assigné à| USER
-    end
-
-    subgraph Workflow [Processus]
-        A[Formulaire rempli] --> B[Validation des données]
-        B --> C[Enregistrement du projet]
-        C --> D[Affichage sur la page principale]
-    end
-
-    PROJECT --> C
+erDiagram
+    PROJECT {
+        int id
+        string nom
+        string description
+        string technologies
+        string niveau
+    }
+    USER {
+        int id
+        string nom
+        string email
+    }
+    PROJECT ||--o{ USER : "est assigné à"
